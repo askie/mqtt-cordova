@@ -34,36 +34,28 @@ public class MqTTPlugin extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-	if (action == "publish" || action == "subscribe") {
-		String url = args.getString(0);
-		String clientId = args.getString(1);
-		Boolean quietMode = args.getBoolean(2);
-		String username = args.getString(3);
-		String password = args.getString(4);
-		Boolean cleanSession = args.getBoolean(5);
-		String topic = args.getString(6);
-		String qos = args.getString(7);
-		String message = args.getString(8);
-	}
-	boolean result = false;
-	switch (action) {
-		case "connect":
-			this.connect(args.getString(0), args.getString(1));
-			result = true;
-			break;
-		case "publish":
-			this.publish(url, clientId, quietMode, username, password, cleanSession, topic , qos, message, callbackContext);
-			result = true;
-			break;
-		case "subscribe":
-			this.subscribe(url, clientId, quietMode, username, password, cleanSession, topic , qos, callbackContext);
-			result = true;
-			break;
-		default:
-			result = false;
-			break;
+		if (action.equals("connect")) {
+			String url = args.getString(0);
+			String clientId = args.getString(1);
+			this.connect(url, clientId);
+			return true;
+		} else {
+			Boolean quietMode = args.getBoolean(0);
+			String username = args.getString(1);
+			String password = args.getString(2);
+			String topic = args.getString(3);
+			String qos = args.getString(4);
+			String message = args.getString(5);
+
+			if (action.equals("publish")) {
+				this.publish(quietMode, username, password, topic , qos, message, callbackContext);
+				return true;
+			} else if (action.equals("connect")) {
+				this.subscribe(quietMode, username, password, topic , qos, callbackContext);
+				return true;
+			}
 		}
-		return result;
+		return false;
 	}
 
 	private void connect(String url, String clientId, CallbackContext callbackContext) {
