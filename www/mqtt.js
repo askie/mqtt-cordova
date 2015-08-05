@@ -37,9 +37,9 @@ var sero = {
 			function () {
 				data.error();
 			},
-			"MqTTPlugin", "connect", [
-				dataUrl, data.clientId
-			]
+			"MqTTPlugin",
+			"connect",
+			[dataUrl, data.clientId]
 		);
 	},
 	publish : function (data) {
@@ -49,9 +49,17 @@ var sero = {
 		} else{
 			quietM = false;
 		};
-		cordova.exec(function(response) {
-        	data.success(response)
-            },function(error) {data.error(error);},"MqTTPlugin","publish",[quietM,data.username,data.password,data.topic,data.qos,data.message]);
+		cordova.exec(
+			function (response) {
+				data.success(response)
+			},
+			function (error) {
+				data.error(error);
+			},
+			"MqTTPlugin",
+			"publish",
+			[quietM, data.username, data.password, data.topic, data.qos, data.message]
+		);
 	},
 	subscribe : function (data,callback) {
 		var quietM;
@@ -60,9 +68,17 @@ var sero = {
 		} else{
 			quietM = false;
 		};
-		cordova.exec(function(response) {
-        	data.success(response)
-            },function(error) {data.error(error);},"MqTTPlugin","subscribe",[quietM,data.username,data.password,data.topic,data.qos]);
+		cordova.exec(
+			function (response) {
+				data.success(response)
+			},
+			function (error) {
+				data.error(error);
+			},
+			"MqTTPlugin",
+			"subscribe",
+			[quietM, data.username, data.password, data.topic, data.qos]
+		);
 	}
 }
 module.exports = sero;

@@ -13,21 +13,21 @@ import org.eclipse.paho.android.service;
  */
 
 public class MqTTPlugin extends CordovaPlugin {
-    public String id;
-    public CordovaWebView webView;					// WebView object
-    public CordovaInterface cordova;
-    public MqttAndroidClient client;
+	public String id;
+	public CordovaWebView webView;					// WebView object
+	public CordovaInterface cordova;
+	public MqttAndroidClient client;
 
-    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-        assert this.cordova == null;
-        this.cordova = cordova;
-        this.webView = webView;
-    }
+	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+		assert this.cordova == null;
+		this.cordova = cordova;
+		this.webView = webView;
+	}
 
-    @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+	@Override
+	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 	if (action == "publish" || action == "subscribe") {
-	    String url = args.getString(0);
+		String url = args.getString(0);
 		String clientId = args.getString(1);
 		Boolean quietMode = args.getBoolean(2);
 		String username = args.getString(3);
@@ -54,12 +54,12 @@ public class MqTTPlugin extends CordovaPlugin {
 		default:
 			result = false;
 			break;
-        }
-        return result;
-    }
+		}
+		return result;
+	}
 
-    private void connect(String url, String clientId, CallbackContext callbackContext) {
-        client = new MqttAndroidClient(getApplicationContext(), url, clientId);
+	private void connect(String url, String clientId, CallbackContext callbackContext) {
+		client = new MqttAndroidClient(getApplicationContext(), url, clientId);
 		client.connect(null, new IMqttActionListener() {
 			@Override
 			public void onSuccess(IMqttToken mqttToken) {
@@ -97,26 +97,26 @@ public class MqTTPlugin extends CordovaPlugin {
 				Log.i(LOGTAG, "Client connection failed: "+arg1.getMessage());
 			}
 		});
-    }
-    
-    private void publish(Boolean quietMode, String username, String password, String topic , String qos, String message, CallbackContext callbackContext); {
-        client.publish(quietMode, username, password, topic , qos, message);
-        if (message != null && message.length() > 0) {
-        	String html= "Publish";
-            callbackContext.success(html);
+	}
 
-        } else {
-            callbackContext.error("Check your parameters");
-        }
-    }
-    private void subscribe(Boolean quietMode, String username, String password, String topic , String qos, CallbackContext callbackContext); {
-        client.subscribe(quietMode, username, password, topic , qos, message);
-        if (url != null && url.length() > 0) {
-            String html= "Subscribe";
-            callbackContext.success(html);
+	private void publish(Boolean quietMode, String username, String password, String topic , String qos, String message, CallbackContext callbackContext); {
+		client.publish(quietMode, username, password, topic , qos, message);
+		if (message != null && message.length() > 0) {
+			String html= "Publish";
+			callbackContext.success(html);
 
-        } else {
-            callbackContext.error("Check your parameters");
-        }
-    }
+		} else {
+			callbackContext.error("Check your parameters");
+		}
+	}
+	private void subscribe(Boolean quietMode, String username, String password, String topic , String qos, CallbackContext callbackContext); {
+		client.subscribe(quietMode, username, password, topic , qos, message);
+		if (url != null && url.length() > 0) {
+			String html= "Subscribe";
+			callbackContext.success(html);
+
+		} else {
+			callbackContext.error("Check your parameters");
+		}
+	}
 }
