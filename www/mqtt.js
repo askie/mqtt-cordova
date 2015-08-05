@@ -18,18 +18,32 @@ mqtt.publish({
 });
 */
 var sero = {
-	publish : function (data) {
-		var dataUrl,cleanSes,quietM;
+	connect : function (data) {
+		var dataUrl, cleanSes;
 		if (data.secure) {
 			dataUrl = "ssl://"+data.url+data.port;
 		} else{
 			dataUrl = "tcp://"+data.url+data.port;
 		};
 		if (data.cleanSession) {
-			cleanSes=true;
+			cleanSes = true;
 		} else{
-			cleanSes=false;
+			cleanSes = false;
 		};
+		cordova.exec(
+			function () {
+				data.success()
+			},
+			function () {
+				data.error();
+			},
+			"MqTTPlugin", "connect", [
+				dataUrl, data.clientId
+			]
+		);
+	},
+	publish : function (data) {
+		var quietM;
 		if (data.debug) {
 			quietM = true;
 		} else{
@@ -37,20 +51,10 @@ var sero = {
 		};
 		cordova.exec(function(response) {
         	data.success(response)
-            },function(error) {data.error(error);},"MqTTPlugin","publish",[dataUrl, data.clientId, quietM,data.username,data.password,cleanSes,data.topic,data.qos,data.message]);
+            },function(error) {data.error(error);},"MqTTPlugin","publish",[quietM,data.username,data.password,data.topic,data.qos,data.message]);
 	},
 	subscribe : function (data,callback) {
-		var dataUrl,cleanSes,quietM;
-		if (data.secure) {
-			dataUrl = "ssl://"+data.url+data.port;
-		} else{
-			dataUrl = "tcp://"+data.url+data.port;
-		};
-		if (data.cleanSession) {
-			cleanSes=true;
-		} else{
-			cleanSes=false;
-		};
+		var quietM;
 		if (data.debug) {
 			quietM = true;
 		} else{
@@ -58,7 +62,7 @@ var sero = {
 		};
 		cordova.exec(function(response) {
         	data.success(response)
-            },function(error) {data.error(error);},"MqTTPlugin","subscribe",[dataUrl, data.clientId, quietM,data.username,data.password,cleanSes,data.topic,data.qos]);
+            },function(error) {data.error(error);},"MqTTPlugin","subscribe",[quietM,data.username,data.password,data.topic,data.qos]);
 	}
 }
 module.exports = sero;

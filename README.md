@@ -12,18 +12,30 @@ to add the plugin
 
 ## Usage
 
+```
+mqtt.connect({
+    url: "m2m.eclipse.org",
+    clientId: "SampleJavaV3_",
+    success: function (){
+        alert('success');
+    },
+    error: function () {
+         alert('error');
+    }    
+	cleanSession: true/false, // optional
+    secure: false/true // optional
+});
+```
+
 To publish a message you can use this function
 
 ```
 mqtt.publish({
-	url:"m2m.eclipse.org",
     topic:"topic",
     secure:false,
     qos:"2",
-    clientId:"SampleJavaV3_",
     portNo:"1883",
     message:"Howzaaa",
-    cleanSession:true,
     username:null,
     password:null,
     debug:false,
@@ -40,12 +52,8 @@ To subscribe you can use this function
 
 ```
 mqtt.subscribe({
-	url:"",
-	port:"",
 	topic:"",
-	secure:false/true,
 	qos:"",
-	cleanSession:true/false,
 	username:"",
 	password:"",
 	debug:true/false,
@@ -53,6 +61,14 @@ mqtt.subscribe({
 	error:function(data){}
 });
 ```
+
+## Building
+
+This plugin makes use of the Android Service lib org.eclipse.paho.android.service. An App which uses this service must include the appropriate Service tag in its manifest - e.g.
+
+	<!-- Mqtt Service -->
+	<service android:name="org.eclipse.paho.android.service.MqttService" />
+
 
 Created and maintained by Arcoiris Labs
 
