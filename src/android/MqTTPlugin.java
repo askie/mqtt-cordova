@@ -7,7 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 // MQTT
-import org.eclipse.paho.android.service;
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -17,6 +23,8 @@ public class MqTTPlugin extends CordovaPlugin {
 	public CordovaWebView webView;					// WebView object
 	public CordovaInterface cordova;
 	public MqttAndroidClient client;
+
+	private static final String LOGTAG = "MQTT Android Cordova Plugin";
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		assert this.cordova == null;
@@ -73,21 +81,14 @@ public class MqTTPlugin extends CordovaPlugin {
 
 				try {
 					client.publish("messages", message);
-
-					Log.i(LOGTAG, "Message published");
-
-					client.disconnect();
-					Log.i(LOGTAG, "client disconnected");
+					Log.i(LOGTAG, "Message published to 'messages' topic");
 				} catch (MqttPersistenceException e) {
-				// TODO Auto-generated catch block
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (MqttException e) {
-				// TODO Auto-generated catch block
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-
-
 			}
 
 			@Override
