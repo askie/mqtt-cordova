@@ -31,11 +31,11 @@ var sero = {
 			cleanSes = false;
 		};
 		cordova.exec(
-			function () {
-				data.success()
+			function (message) {
+				data.success(message);
 			},
-			function () {
-				data.error();
+			function (message) {
+				data.error(message);
 			},
 			"MqTTPlugin",
 			"connect",

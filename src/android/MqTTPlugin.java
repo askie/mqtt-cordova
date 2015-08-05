@@ -59,13 +59,12 @@ public class MqTTPlugin extends CordovaPlugin {
 	}
 
 	private void connect(String url, String clientId, CallbackContext callbackContext) {
-		client = new MqttAndroidClient(getApplicationContext(), url, clientId);
+		client = new MqttAndroidClient(getContext(), url, clientId);
 		client.connect(null, new IMqttActionListener() {
 			@Override
 			public void onSuccess(IMqttToken mqttToken) {
-				callbackContext.success();
-				Log.i(LOGTAG, "Client connected");
-				Log.i(LOGTAG, "Topics="+mqttToken.getTopics());
+				String topics = mqttToken.getTopics();
+				callbackContext.success(topics);
 
 				MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
 				message.setQos(2);
@@ -73,7 +72,6 @@ public class MqTTPlugin extends CordovaPlugin {
 
 				try {
 					client.publish("messages", message);
-					Log.i(LOGTAG, "Message published to 'messages' topic");
 				} catch (MqttPersistenceException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -85,14 +83,13 @@ public class MqTTPlugin extends CordovaPlugin {
 
 			@Override
 			public void onFailure(IMqttToken arg0, Throwable arg1) {
-				callbackContext.error();
-				// TODO Auto-generated method stub
-				Log.i(LOGTAG, "Client connection failed: "+arg1.getMessage());
+				String message = arg1.getMessage();
+				callbackContext.error(message);
 			}
 		});
 	}
 
-	private void publish(Boolean quietMode, String username, String password, String topic , String qos, String message, CallbackContext callbackContext); {
+	private void publish(Boolean quietMode, String username, String password, String topic , String qos, String message, CallbackContext callbackContext) {
 		client.publish(quietMode, username, password, topic , qos, message);
 		if (message != null && message.length() > 0) {
 			String html= "Publish";
@@ -102,7 +99,7 @@ public class MqTTPlugin extends CordovaPlugin {
 			callbackContext.error("Check your parameters");
 		}
 	}
-	private void subscribe(Boolean quietMode, String username, String password, String topic , String qos, CallbackContext callbackContext); {
+	private void subscribe(Boolean quietMode, String username, String password, String topic , String qos, CallbackContext callbackContext) {
 		client.subscribe(quietMode, username, password, topic , qos, message);
 		if (url != null && url.length() > 0) {
 			String html= "Subscribe";
