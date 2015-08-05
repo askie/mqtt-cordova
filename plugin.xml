@@ -24,8 +24,8 @@
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.INTERNET" />
         </config-file>
-        <source-file src="src/android/MqTTPlugin.java" target-dir="src/com/arcoirislabs/plugin/mqtt" />
         <source-file src="libs/org.eclipse.paho.android.service-1.0.2.jar" target-dir="libs/" />
         <source-file src="libs/org.eclipse.paho.client.mqttv3-1.0.2.jar" target-dir="libs/" />
+        <source-file src="src/android/MqTTPlugin.java" target-dir="src/com/arcoirislabs/plugin/mqtt" />
     </platform>
 </plugin>
