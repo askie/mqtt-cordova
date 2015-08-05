@@ -37,7 +37,7 @@ public class MqTTPlugin extends CordovaPlugin {
 		if (action.equals("connect")) {
 			String url = args.getString(0);
 			String clientId = args.getString(1);
-			this.connect(url, clientId);
+			this.connect(url, clientId, callbackContext);
 			return true;
 		} else {
 			Boolean quietMode = args.getBoolean(0);
