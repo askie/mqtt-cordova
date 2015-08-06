@@ -5,6 +5,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
+import android.util.Log;
 
 // MQTT
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -61,13 +62,49 @@ public class MqTTPlugin extends CordovaPlugin {
 		return false;
 	}
 
-	private void connect(String url, String clientId, CallbackContext callbackContext) {
-		client = new MqttAndroidClient(webView.getContext(), url, clientId);
-		try {
-			client.connect(null, new ConnectListener());
-		} catch (MqttException e) {
-			callbackContext.error(e.getMessage());
-		}
+	private void connect(final String url, final String clientId, final CallbackContext callbackContext) {
+		cordova.getThreadPool().execute(new Runnable() {
+			public void run() {
+				client = new MqttAndroidClient(cordova.getActivity().getApplicationContext(), url, clientId);
+				try {
+					client.connect(null, new IMqttActionListener() {
+						@Override
+						public void onSuccess(IMqttToken mqttToken) {
+							Log.i(LOGTAG, "Successfully connected");
+							String[] topics = mqttToken.getTopics();
+							if (topics != null) {
+								callbackContext.success(topics.toString());
+							} else {
+								callbackContext.success("success");
+							}
+
+							MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
+							message.setQos(2);
+							message.setRetained(false);
+
+							try {
+								client.publish("messages", message);
+							} catch (MqttPersistenceException e) {
+								Log.e(LOGTAG, "MqttPersistenceException: " + e.getMessage());
+								callbackContext.error(e.getMessage());
+							} catch (MqttException e) {
+								Log.e(LOGTAG, "MqttException: " + e.getMessage());
+								callbackContext.error(e.getMessage());
+							}
+						}
+
+						@Override
+						public void onFailure(IMqttToken arg0, Throwable arg1) {
+							String message = arg1.getMessage();
+							Log.e(LOGTAG, message);
+							callbackContext.error(message);
+						}
+					});
+				} catch (MqttException e) {
+					callbackContext.error(e.getMessage());
+				}
+			}
+		});
 	}
 
 	private void publish(String topic, int qos, String message, Boolean retained, CallbackContext callbackContext) {
@@ -97,38 +134,4 @@ public class MqTTPlugin extends CordovaPlugin {
 		}
 	}
 
-	private class ConnectListener implements IMqttActionListener {
-
-		private CallbackContext callbackContext;
-
-		public void initialize(CallbackContext callbackContext) {
-			this.callbackContext = callbackContext;
-		}
-
-		@Override
-		public void onSuccess(IMqttToken mqttToken) {
-			String[] topics = mqttToken.getTopics();
-			callbackContext.success(topics.toString());
-
-			MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
-			message.setQos(2);
-			message.setRetained(false);
-
-			try {
-				client.publish("messages", message);
-			} catch (MqttPersistenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MqttException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void onFailure(IMqttToken arg0, Throwable arg1) {
-			String message = arg1.getMessage();
-			callbackContext.error(message);
-		}
-	}
 }
