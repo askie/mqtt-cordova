@@ -17,14 +17,10 @@ mqtt.publish({
 	error:function(data){}
 });
 */
+
 var sero = {
-	connect : function (data) {
-		var dataUrl, cleanSes;
-		if (data.secure) {
-			dataUrl = "ssl://"+data.url+data.port;
-		} else{
-			dataUrl = "tcp://"+data.url+data.port;
-		};
+	connect: function (data) {
+		var cleanSes;
 		if (data.cleanSession) {
 			cleanSes = true;
 		} else{
@@ -39,7 +35,7 @@ var sero = {
 			},
 			"MqTTPlugin",
 			"connect",
-			[dataUrl, data.clientId]
+			[data.url, data.clientId]
 		);
 	},
 	publish : function (data) {
@@ -61,7 +57,7 @@ var sero = {
 			[quietM, data.username, data.password, data.topic, data.qos, data.message]
 		);
 	},
-	subscribe : function (data,callback) {
+	subscribe : function (data, callback) {
 		var quietM;
 		if (data.debug) {
 			quietM = true;

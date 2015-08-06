@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
            id="com.arcoirislabs.plugin.mqtt"
       version="0.1.0">
@@ -15,6 +15,8 @@
     </js-module>
     <!-- android -->
     <platform name="android">
+        <framework src="com.android.support:support-v4:22.2.+" />
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="MqTTPlugin">
                 <param name="android-package" value="com.arcoirislabs.plugin.mqtt.MqTTPlugin"/>
@@ -23,9 +25,25 @@
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
         </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="org.eclipse.paho.android.service.MqttService" />
+        </config-file>
+
         <source-file src="libs/org.eclipse.paho.android.service-1.0.2.jar" target-dir="libs/" />
         <source-file src="libs/org.eclipse.paho.client.mqttv3-1.0.2.jar" target-dir="libs/" />
         <source-file src="src/android/MqTTPlugin.java" target-dir="src/com/arcoirislabs/plugin/mqtt" />
+
+        <info>
+            Install "Android Support Repository" through the Standalone Android SDK Manager in Android Studio if it's not there.
+
+            Then add the following line (if it is not there already) to your dependencies in the build.gradle file of the Android Module, not in CordovaLib
+
+            compile "com.android.support:support-v4:22.2.+"
+        </info>
     </platform>
 </plugin>

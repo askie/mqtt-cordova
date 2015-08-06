@@ -3,7 +3,8 @@ mqtt-cordova
 
 # MqTT Plugin for Cordova
 
-This is a plugin for MqTT protocol of messaging. Currently Android is supported. Forthcoming support for Windows Phone. More features are stil being developed.
+This is a plugin for MqTT protocol of messaging. Currently Android is supported. Forthcoming support for Windows Phone.
+More features are stil being developed.
 
 ## Features
 
@@ -12,9 +13,11 @@ to add the plugin
 
 ## Usage
 
+You can use the following functions after onDeviceReady was triggered. Use connect() before any other functions.
+
 ```
 mqtt.connect({
-    url: "m2m.eclipse.org",
+    url: "tcp://m2m.eclipse.org:1883",
     clientId: "SampleJavaV3_",
     success: function (subscribedTopicsString) {
         alert('success: ' + subscribedTopicsString);
@@ -23,11 +26,11 @@ mqtt.connect({
          alert('error:' + message);
     }    
 	cleanSession: true/false, // optional
-    secure: false/true // optional
 });
 ```
 
-To publish a message you can use this function
+To publish a message you can use this function. It should be used after connect() was succesful, maybe use the
+corresponding callback of the latter.
 
 ```
 mqtt.publish({
@@ -46,7 +49,7 @@ mqtt.publish({
 });
 ```
 
-To subscribe you can use this function
+To subscribe you can use this function. This is not tested yet and you will likely have to work on MqTTPlugin.java yourself
 
 ```
 mqtt.subscribe({
@@ -55,8 +58,8 @@ mqtt.subscribe({
 	username:"",
 	password:"",
 	debug:true/false,
-	success:function (data){},
-	error:function (data){}
+	success:function (data) {},
+	error:function (data) {}
 });
 ```
 
@@ -68,7 +71,14 @@ include the appropriate service tag in its manifest - e.g.
 	<!-- Mqtt Service -->
 	<service android:name="org.eclipse.paho.android.service.MqttService" />
 	
-This might be added by Cordova automatically.
+This might be added by Cordova automatically through this repository's plugin.xml specification.
+
+Add "Android Support Repository" through the Standalone Android SDK Manager in Android Studio.
+            
+Then add the following line to your dependencies in the build.gradle file of the Android Module, not in CordovaLib.
+It's likely that the specified version is not the only one that's working, but that's not tested.
+
+    compile "com.android.support:support-v4:22.2.+"
 
 
 Created and maintained by Arcoiris Labs
