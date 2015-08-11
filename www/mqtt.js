@@ -17,7 +17,7 @@ mqtt.publish({
 	error:function(data){}
 });
 */
-function processPluginParams(pluginParams) {
+function processPluginParams(pluginParams, data) {
 	for(var key in pluginParams) {
 		if (pluginParams.hasOwnProperty(key)) {
 			if (typeof(data[key]) === "undefined") {
@@ -47,7 +47,7 @@ var sero = {
 			cleanSession: false
 		};
 		console.log('Connecting');
-		pluginParams = processPluginParams(pluginParams);
+		pluginParams = processPluginParams(pluginParams, data);
 		cordova.exec(
 			function (message) {
 				data.success(message);
@@ -68,7 +68,7 @@ var sero = {
 			message: true
 		};
 		console.log('Publishing');
-		pluginParams = processPluginParams(pluginParams);
+		pluginParams = processPluginParams(pluginParams, data);
 		cordova.exec(
 			function (response) {
 				data.success(response)
@@ -88,7 +88,7 @@ var sero = {
 			qos: true
 		};
 		console.log('Subscribing');
-		pluginParams = processPluginParams(pluginParams);
+		pluginParams = processPluginParams(pluginParams, data);
 		cordova.exec(
 			function (response) {
 				data.success(response)
