@@ -38,23 +38,26 @@ public class MqTTPlugin extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+		Log.d(LOGTAG, action + " action called");
+		Log.d(LOGTAG, args.toString());
 		if (action.equals("connect")) {
 			String url = args.getString(0);
 			String clientId = args.getString(1);
+			String username = args.optString(2);
+			String password = args.optString(3);
+			Boolean cleanSession = args.optBoolean(4);
 			this.connect(url, clientId, callbackContext);
 			return true;
 		} else {
 			Boolean quietMode = args.getBoolean(0);
-			String username = args.getString(1);
-			String password = args.getString(2);
-			String topic = args.getString(3);
-			int qos = args.getInt(4);
-			String message = args.getString(5);
+			String topic = args.getString(1);
+			int qos = args.getInt(2);
+			String message = args.optString(3);
 			Boolean retained = false;
 			if (action.equals("publish")) {
 				this.publish(topic, qos, message, retained, callbackContext);
 				return true;
-			} else if (action.equals("connect")) {
+			} else if (action.equals("subscribe")) {
 				this.subscribe(topic, qos, callbackContext);
 				return true;
 			}
@@ -63,6 +66,7 @@ public class MqTTPlugin extends CordovaPlugin {
 	}
 
 	private void connect(final String url, final String clientId, final CallbackContext callbackContext) {
+		Log.i(LOGTAG, "Connecting as " + clientId + " to " + url + " ...");
 		cordova.getThreadPool().execute(new Runnable() {
 			public void run() {
 				client = new MqttAndroidClient(cordova.getActivity().getApplicationContext(), url, clientId);
@@ -96,12 +100,12 @@ public class MqTTPlugin extends CordovaPlugin {
 						@Override
 						public void onFailure(IMqttToken arg0, Throwable arg1) {
 							String message = arg1.getMessage();
-							Log.e(LOGTAG, message);
+							Log.e(LOGTAG, "connect onFailure: " + message);
 							callbackContext.error(message);
 						}
 					});
 				} catch (MqttException e) {
-					callbackContext.error(e.getMessage());
+					callbackContext.error("connect MqttException: " + e.getMessage());
 				}
 			}
 		});
@@ -125,11 +129,14 @@ public class MqTTPlugin extends CordovaPlugin {
 		try {
 			IMqttToken token = client.subscribe(topic, qos);
 			if (token != null) {
+				Log.i(LOGTAG, "subscribed to " + token.getTopics().toString());
 				callbackContext.success(token.getTopics().toString());
 			} else {
+				Log.e(LOGTAG, "subscribe token is null");
 				callbackContext.error("token is null");
 			}
 		} catch (MqttException e) {
+			Log.e(LOGTAG, "exception when subscribing: " + e.getMessage());
 			callbackContext.error(e.getMessage());
 		}
 	}
