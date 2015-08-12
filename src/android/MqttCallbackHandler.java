@@ -21,6 +21,8 @@ public class MqttCallbackHandler implements MqttCallback {
   /** Client handle to reference the client that this handler is attached to**/
   private String clientHandle;
 
+  private static final String LOGTAG = "MQTT Android Cordova Plugin";
+
   /**
    * Creates an <code>MqttCallbackHandler</code> object
    * @param clientHandle The handle to a client object
