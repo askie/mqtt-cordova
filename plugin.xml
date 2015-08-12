@@ -18,7 +18,7 @@
         <framework src="com.android.support:support-v4:22.2.+" />
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="MqTTPlugin">
+            <feature name="MqttPlugin">
                 <param name="android-package" value="com.arcoirislabs.plugin.mqtt.MqttPlugin"/>
             </feature>
         </config-file>
