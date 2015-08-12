@@ -60,7 +60,7 @@ var sero = {
 			pluginParams
 		);
 	},
-	publish : function (data) {
+	publish: function (data) {
 		var pluginParams = {//true if required
 			debug: false,
 			topic: true,
@@ -81,7 +81,7 @@ var sero = {
 			pluginParams
 		);
 	},
-	subscribe : function (data, callback) {
+	subscribe:  function (data, callback) {
 		var pluginParams = {//true if required
 			debug: false,
 			topic: true,
@@ -100,6 +100,10 @@ var sero = {
 			"subscribe",
 			pluginParams
 		);
+	},
+	_onMessageReceived: function (topic, payload) {
+		console.log('Message received in JavaScript:');
+		console.log(topic, payload);
 	}
 }
 module.exports = sero;
