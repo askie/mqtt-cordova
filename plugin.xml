@@ -10,7 +10,7 @@
     <engines>
       <engine name="cordova" version=">=3.0.0" />
     </engines>    
-    <js-module src="www/mqtt.js" name="MqTT">
+    <js-module src="www/mqtt.js" name="MQTT">
         <clobbers target="window.mqtt" />
     </js-module>
     <!-- android -->

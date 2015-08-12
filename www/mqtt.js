@@ -1,5 +1,5 @@
 /*
-MqTT-Cordova 
+MQTT-Cordova 
 Doc:-
 Publish (with credentials)
 mqtt.publish({
