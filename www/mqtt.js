@@ -101,10 +101,12 @@ var sero = {
 		console.log('Subscribing');
 		pluginParams = processPluginParams(pluginParams, data);
 		cordova.exec(
-			function (response) {
-				data.success(response);
-				var key = pluginParams.topic;
-				addToCallbackMap(key, callback);
+			function (topics) {
+				console.log("JS: subscribed to " + topics);
+				data.success(topics);
+				for (var i = 0; i < topics.length; i++) {
+					addToCallbackMap(topics[i], callback);
+				}
 			},
 			function (error) {
 				data.error(error);

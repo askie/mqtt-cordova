@@ -7,6 +7,7 @@ import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.util.Log;
+import java.util.Arrays;
 
 // MQTT
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -132,8 +133,15 @@ public class MqttPlugin extends CordovaPlugin {
 		try {
 			IMqttToken token = client.subscribe(topic, qos);
 			if (token != null) {
-				Log.i(LOGTAG, "subscribed to " + token.getTopics().toString());
-				callbackContext.success(token.getTopics().toString());
+				String topicsString = Arrays.toString(token.getTopics());
+				Log.i(LOGTAG, "subscribed to " + topicsString);
+				JSONArray topics = null;
+				try {
+					topics = new JSONArray(token.getTopics());
+					callbackContext.success(topics);
+				} catch (JSONException e) {
+					callbackContext.error("topics could not be converted to JSONArray: " + topicsString);
+				}
 			} else {
 				Log.e(LOGTAG, "subscribe token is null");
 				callbackContext.error("token is null");
