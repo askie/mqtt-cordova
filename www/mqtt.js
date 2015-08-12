@@ -17,6 +17,7 @@ mqtt.publish({
 	error:function(data){}
 });
 */
+
 function processPluginParams(pluginParams, data) {
 	for(var key in pluginParams) {
 		if (pluginParams.hasOwnProperty(key)) {
@@ -36,6 +37,15 @@ function processPluginParams(pluginParams, data) {
 	console.log(pluginParams);
 	return pluginParams;
 }
+
+function addToCallbackMap(key, callback) {
+	if (typeof(callbackMap[key]) === "undefined") {
+		callbackMap[key] = [];
+	}
+	callbackMap[key].push(callback);
+}
+
+var callbackMap = {};
 
 var sero = {
 	connect: function (data) {
@@ -91,7 +101,9 @@ var sero = {
 		pluginParams = processPluginParams(pluginParams, data);
 		cordova.exec(
 			function (response) {
-				data.success(response)
+				data.success(response);
+				var key = pluginParams.topic;
+				addToCallbackMap(key, callback);
 			},
 			function (error) {
 				data.error(error);
@@ -103,7 +115,16 @@ var sero = {
 	},
 	_onMessageReceived: function (topic, payload) {
 		console.log('Message received in JavaScript:');
-		console.log(topic, payload);
+		console.log(topic);
+		console.log(payload);
+		var callbacks = callbackMap[topic];
+		if (callbacks instanceof Array) {
+			console.log("Found " + callbacks.length + " callbacks");
+			for (var callback in callbacks) {
+				callback.apply(this);
+			}
+		}
 	}
 }
+
 module.exports = sero;
