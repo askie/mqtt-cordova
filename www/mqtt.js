@@ -55,7 +55,7 @@ var sero = {
 			function (message) {
 				data.error(message);
 			},
-			"MqTTPlugin",
+			"MqttPlugin",
 			"connect",
 			pluginParams
 		);
@@ -76,7 +76,7 @@ var sero = {
 			function (error) {
 				data.error(error);
 			},
-			"MqTTPlugin",
+			"MqttPlugin",
 			"publish",
 			pluginParams
 		);
@@ -96,7 +96,7 @@ var sero = {
 			function (error) {
 				data.error(error);
 			},
-			"MqTTPlugin",
+			"MqttPlugin",
 			"subscribe",
 			pluginParams
 		);

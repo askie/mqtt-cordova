@@ -1,14 +1,14 @@
 mqtt-cordova
 ============
 
-# MqTT Plugin for Cordova
+# MQTT Plugin for Cordova
 
-This is a plugin for MqTT protocol of messaging. Currently Android is supported. Forthcoming support for Windows Phone.
+This is a plugin for MQTT protocol of messaging. Currently Android is supported. Forthcoming support for Windows Phone.
 More features are stil being developed.
 
 ## Features
 
-This plugin can publish and subscribe for any MqTT server. Currently it works only for compulsory authentication.
+This plugin can publish and subscribe for any MQTT server. Currently it works only for compulsory authentication.
 to add the plugin 
 
 ## Usage
@@ -49,7 +49,7 @@ mqtt.publish({
 });
 ```
 
-To subscribe you can use this function. This is not tested yet and you will likely have to work on MqTTPlugin.java yourself
+To subscribe you can use this function. This is not tested yet and you will likely have to work on MQTTPlugin.java yourself
 
 ```
 mqtt.subscribe({

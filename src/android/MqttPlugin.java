@@ -21,7 +21,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  * This class echoes a string called from JavaScript.
  */
 
-public class MqTTPlugin extends CordovaPlugin {
+public class MqttPlugin extends CordovaPlugin {
 	public String id;
 	public CordovaWebView webView;					// WebView object
 	public CordovaInterface cordova;
@@ -82,7 +82,7 @@ public class MqTTPlugin extends CordovaPlugin {
 							} else {
 								callbackContext.success("success");
 							}
-							MqTTCallbackHandler callbackHandler = new MqTTCallbackHandler(webView, url + clientId);
+							MqttCallbackHandler callbackHandler = new MqttCallbackHandler(webView, url + clientId);
 							client.setCallback(callbackHandler);
 
 							MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());

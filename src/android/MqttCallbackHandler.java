@@ -13,7 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * Handles callbacks from the MQTT Client
  *
  */
-public class MqTTCallbackHandler implements MqttCallback {
+public class MqttCallbackHandler implements MqttCallback {
 
   /** Cordova's web view to be able to communicate with it  */
   private CordovaWebView webView;
