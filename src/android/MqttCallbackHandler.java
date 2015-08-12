@@ -52,7 +52,7 @@ public class MqttCallbackHandler implements MqttCallback {
 	String payload = new String(message.getPayload());
 	message.getQos();
 	message.isRetained();
-	webView.sendJavascript("cordova.require(\"cordova/plugin/mqtt\")._onMessageReceived('"+topic+"','"+payload+"')");
+	webView.sendJavascript("cordova.require(\"com.arcoirislabs.plugin.mqtt.MQTT\")._onMessageReceived('"+topic+"','"+payload+"')");
   }
 
   /**

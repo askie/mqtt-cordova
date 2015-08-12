@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
            id="com.arcoirislabs.plugin.mqtt"
       version="0.1.0">
-    <name>MqTT</name>
+    <name>MQTT</name>
     <description>Cordova MQTT Plugin from Arcoiris Labs</description>
     <license>Apache 2.0</license>
     <keywords>cordova,phonegap,secure,mqtt</keywords>
