@@ -1,4 +1,5 @@
 package com.arcoirislabs.plugin.mqtt;
+
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -81,6 +82,8 @@ public class MqTTPlugin extends CordovaPlugin {
 							} else {
 								callbackContext.success("success");
 							}
+							MqTTCallbackHandler callbackHandler = new MqTTCallbackHandler(webView, url + clientId);
+							client.setCallback(callbackHandler);
 
 							MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
 							message.setQos(2);
