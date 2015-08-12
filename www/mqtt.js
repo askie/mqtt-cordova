@@ -123,8 +123,8 @@ var sero = {
 		var callbacks = callbackMap[topic];
 		if (callbacks instanceof Array) {
 			console.log("Found " + callbacks.length + " callbacks");
-			for (var callback in callbacks) {
-				callback.apply(this, [topic, payload]);
+			for (var i = 0; i < callbacks.length; i++) {
+				callbacks[i].apply(this, [topic, payload]);
 			}
 		}
 	}
