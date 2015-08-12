@@ -43,6 +43,7 @@ function addToCallbackMap(key, callback) {
 		callbackMap[key] = [];
 	}
 	callbackMap[key].push(callback);
+	console.log("Callback added for " + key);
 }
 
 var callbackMap = {};
@@ -121,7 +122,7 @@ var sero = {
 		if (callbacks instanceof Array) {
 			console.log("Found " + callbacks.length + " callbacks");
 			for (var callback in callbacks) {
-				callback.apply(this);
+				callback.apply(this, [topic, payload]);
 			}
 		}
 	}
