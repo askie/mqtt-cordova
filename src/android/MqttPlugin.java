@@ -54,9 +54,9 @@ public class MqttPlugin extends CordovaPlugin {
 			Boolean quietMode = args.getBoolean(0);
 			String topic = args.getString(1);
 			int qos = args.getInt(2);
-			String message = args.optString(3);
-			Boolean retained = false;
 			if (action.equals("publish")) {
+				String message = args.optString(3);
+				Boolean retained = args.optBoolean(4);
 				this.publish(topic, qos, message, retained, callbackContext);
 				return true;
 			} else if (action.equals("subscribe")) {

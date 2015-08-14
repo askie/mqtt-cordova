@@ -76,7 +76,8 @@ var sero = {
 			debug: false,
 			topic: true,
 			qos: true,
-			message: true
+			message: true,
+			retained: false
 		};
 		console.log('Publishing');
 		pluginParams = processPluginParams(pluginParams, data);
