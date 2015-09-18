@@ -46,6 +46,18 @@ function addToCallbackMap(key, callback) {
 	console.log("Callback added for " + key);
 }
 
+function subscriptionMatchesTopic(sub, topic) {
+	var subWithWildcardSupport = sub.replace(/(\/)|(\+)|(#)/g, subscriptionToRegex);
+	subWithWildcardSupport = new RegExp(subWithWildcardSupport);
+	return topic.match(subWithWildcardSupport);
+}
+
+function subscriptionToRegex(match, slash, plus, dash) {
+	if (slash) { return '\/'; }
+	if (plus) { return '[^\/]+?'; }
+	if (dash) { return '.+'; }
+}
+
 var callbackMap = {};
 
 var sero = {
@@ -121,14 +133,21 @@ var sero = {
 		console.log('Message received in JavaScript:');
 		console.log(topic);
 		console.log(payload);
-		var callbacks = callbackMap[topic];
-		if (callbacks instanceof Array) {
-			console.log("Found " + callbacks.length + " callbacks");
-			for (var i = 0; i < callbacks.length; i++) {
-				callbacks[i].apply(this, [topic, payload]);
+		var matches = Object.keys(callbackMap).filter(function (subscription) {
+			return subscriptionMatchesTopic(subscription, topic);
+		});
+		matches.forEach(function (key) {
+			var callbacks = callbackMap[key];
+			if (callbacks instanceof Array) {
+				console.log("Found " + callbacks.length + " callbacks");
+				for (var i = 0; i < callbacks.length; i++) {
+					callbacks[i].apply(this, [topic, payload]);
+				}
 			}
-		}
+		});
 	}
-}
+
+
+};
 
 module.exports = sero;
